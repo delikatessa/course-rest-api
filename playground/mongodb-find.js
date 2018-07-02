@@ -44,14 +44,14 @@ MongoClient.connect(
 		// 		}
 		// 	);
 
-		const users = db.collection('Users');
+		const collection = db.collection('Todos');
 
-		users
+		collection
 			.find()
 			.toArray()
 			.then(
 				docs => {
-					console.log('Users');
+					console.log(collection.collectionName);
 					console.log(JSON.stringify(docs, undefined, 2));
 				},
 				err => {

@@ -11,31 +11,30 @@ MongoClient.connect(
 		console.log('Connected to MongoDB server');
 		const db = client.db('TodoApp');
 
-		const todos = db.collection('Todos');
+		const collection = db.collection('Todos');
 
 		// deleteMany
-		// todos.deleteMany({text: 'Eat lunch'}).then(result => {
-		// 	console.log(result.result);
-		// });
-
-		// deleteOne
-		// todos.deleteOne({text: 'Eat lunch'}).then(result => {
-		// 	console.log(result.result);
-		// });
-
-		// findOneAndDelete
-		// todos.findOneAndDelete({text: 'Eat lunch'}).then(result => {
+		// collection.deleteMany({name: 'Eat lunch'}).then(result => {
 		// 	console.log(result);
 		// });
 
-		// CHALLENGE
-		db.collection('Users')
-			.deleteMany({name: 'Andrew'})
-			.then(result => console.log(result.result));
+		// deleteOne
+		// collection.deleteOne({name: 'Eat lunch'}).then(result => {
+		// 	console.log(result);
+		// });
 
-		db.collection('Users')
-			.findOneAndDelete({_id: new ObjectID('5b28ac8ce0090a02d044608d')})
-			.then(result => console.log(result));
+		// findOneAndDelete
+		collection.findOneAndDelete({completed: false}).then(result => {
+			console.log(result);
+		});
+		// OUTPUT
+		// { lastErrorObject: { n: 1 },
+		// 	value:
+		// 	{ _id: 5b1f7bd2d46efa1963326af0,
+		// 		completed: false,
+		// 		name: 'Walk the dog' },
+		// 	ok: 1 }
+
 		//client.close();
 	}
 );
