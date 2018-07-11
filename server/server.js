@@ -13,15 +13,18 @@ app.post('/todos', (req, res) => {
 	var todo = new Todo({
 		name: req.body.text,
 	});
-	todo.save().then(
-		doc => {
-			res.send(doc);
-		},
-		e => {
-			res.status(400).send(e);
-			`vk`;
-		}
-	);
+	todo
+		.save()
+		.then(doc => res.send(doc))
+		.catch(error => res.status(400).send(error));
+});
+
+app.get('/todos', (req, res) => {
+	Todo.find()
+		.then(todos => {
+			res.send({todos});
+		})
+		.catch(error => res.status(400).send(error));
 });
 
 app.listen(3333, () => {
