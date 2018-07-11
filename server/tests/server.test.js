@@ -4,8 +4,19 @@ const expect = require('chai').expect;
 const {app} = require('../server');
 const {Todo} = require('../models/todo');
 
+const testTodos = [
+	{
+		name: 'First test todo',
+	},
+	{
+		name: 'Second test todo',
+	},
+];
+
 beforeEach(done => {
-	Todo.remove({}).then(() => done());
+	Todo.remove({})
+		.then(() => Todo.insertMany(testTodos))
+		.then(() => done());
 });
 
 describe('POST /todos', () => {
@@ -23,7 +34,7 @@ describe('POST /todos', () => {
 				if (err) {
 					return done(err);
 				}
-				Todo.find()
+				Todo.find({name: text})
 					.then(todos => {
 						expect(todos.length).to.be.equal(1);
 						expect(todos[0].name).to.be.equal(text);
@@ -44,10 +55,22 @@ describe('POST /todos', () => {
 				}
 				Todo.find()
 					.then(todos => {
-						expect(todos.length).to.be.equal(0);
+						expect(todos.length).to.be.equal(testTodos.length);
 						done();
 					})
 					.catch(e => done(e));
 			});
+	});
+});
+
+describe('GET /todos', () => {
+	it('should get all todos', done => {
+		request(app)
+			.get('/todos')
+			.expect(200)
+			.expect(res => {
+				expect(res.body.todos.length).to.be.equal(testTodos.length);
+			})
+			.end(done);
 	});
 });
