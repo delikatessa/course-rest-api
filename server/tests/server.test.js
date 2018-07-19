@@ -6,10 +6,10 @@ const {Todo} = require('../models/todo');
 
 const testTodos = [
 	{
-		name: 'First test todo',
+		text: 'First test todo',
 	},
 	{
-		name: 'Second test todo',
+		text: 'Second test todo',
 	},
 ];
 
@@ -28,16 +28,16 @@ describe('POST /todos', () => {
 			.send({text})
 			.expect(200)
 			.expect(res => {
-				expect(res.body.name).to.be.equal(text);
+				expect(res.body.text).to.be.equal(text);
 			})
 			.end((err, res) => {
 				if (err) {
 					return done(err);
 				}
-				Todo.find({name: text})
+				Todo.find({text: text})
 					.then(todos => {
 						expect(todos.length).to.be.equal(1);
-						expect(todos[0].name).to.be.equal(text);
+						expect(todos[0].text).to.be.equal(text);
 						done();
 					})
 					.catch(e => done(e));

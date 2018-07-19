@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 app.post('/todos', (req, res) => {
 	var todo = new Todo({
-		name: req.body.text,
+		text: req.body.text,
 	});
 	todo
 		.save()
@@ -30,17 +30,19 @@ app.get('/todos', (req, res) => {
 app.get('/todos/:id', (req, res) => {
 	const id = req.params.id;
 	if (!ObjectID.isValid(id)) {
-		res.status(404).send();
-	} else {
-		Todo.findById(id)
-			.then(todo => {
-				if (!todo) {
-					res.status(400).send();
-				}
-				res.status(200).send(todo);
-			})
-			.catch(error => res.status(400).send());
+		return res.status(404).send();
 	}
+	Todo.findById(id)
+		.then(todo => {
+			if (!todo) {
+				res.status(404).send();
+			}
+			res.status(200).send({todo});
+		})
+		.catch(error => {
+			console.log(JSON.stringify(error));
+			res.status(400).send()
+		});
 });
 
 app.listen(3333, () => {

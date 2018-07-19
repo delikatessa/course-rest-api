@@ -14,12 +14,12 @@ MongoClient.connect(
 		const collection = db.collection('Todos');
 
 		// deleteMany
-		// collection.deleteMany({name: 'Eat lunch'}).then(result => {
+		// collection.deleteMany({text: 'Eat lunch'}).then(result => {
 		// 	console.log(result);
 		// });
 
 		// deleteOne
-		// collection.deleteOne({name: 'Eat lunch'}).then(result => {
+		// collection.deleteOne({text: 'Eat lunch'}).then(result => {
 		// 	console.log(result);
 		// });
 
@@ -32,7 +32,7 @@ MongoClient.connect(
 		// 	value:
 		// 	{ _id: 5b1f7bd2d46efa1963326af0,
 		// 		completed: false,
-		// 		name: 'Walk the dog' },
+		// 		text: 'Walk the dog' },
 		// 	ok: 1 }
 
 		//client.close();
