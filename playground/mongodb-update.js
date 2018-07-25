@@ -11,12 +11,15 @@ MongoClient.connect(
 		console.log('Connected to MongoDB server');
 		const db = client.db('TodoApp');
 
-		const collection = db.collection('Todos');
-
-		// findOneAndUpdate
-		collection
-			.findOneAndUpdate({completed: false}, {completed: true})
-			.then(result => console.log(result));
+		db.collection('todos').findOneAndUpdate({
+			_id: new ObjectID('5b50603c04f2a9581dac0ef8')
+		}, {
+			$set: {
+				completed: true
+			}
+		}, {
+			returnOriginal: false
+		}).then(result => console.log(result));
 
 		// print collection
 		// collection

@@ -11,7 +11,7 @@ MongoClient.connect(
 		console.log('Connected to MongoDB server');
 		const db = client.db('TodoApp');
 
-		const todos = db.collection('Todos');
+		const todos = db.collection('todos');
 
 		//todos.update({text: 'Walk the dog'}, {completed: true});
 
@@ -44,7 +44,7 @@ MongoClient.connect(
 		// 		}
 		// 	);
 
-		const collection = db.collection('Todos');
+		const collection = db.collection('todos');
 
 		collection
 			.find()

@@ -11,7 +11,7 @@ MongoClient.connect(
 		console.log('Connected to MongoDB server');
 		const db = client.db('TodoApp');
 
-		const collection = db.collection('Todos');
+		const collection = db.collection('todos');
 
 		// deleteMany
 		// collection.deleteMany({text: 'Eat lunch'}).then(result => {

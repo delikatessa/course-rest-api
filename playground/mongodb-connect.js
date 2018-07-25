@@ -22,7 +22,7 @@ MongoClient.connect(
 		const db = client.db('TodoApp');
 
 		/* Create a Collection and insert a Document */
-		db.collection('Todos').insertOne(
+		db.collection('todos').insertOne(
 			{
 				text: 'Eat lunch',
 				completed: false,
