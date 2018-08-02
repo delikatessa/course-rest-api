@@ -18,16 +18,13 @@ const testTodos = [
 	},
 ];
 
-
-
 describe('test server', () => {
-
 	beforeEach(done => {
 		Todo.remove({})
 			.then(() => Todo.insertMany(testTodos))
 			.then(() => done());
 	});
-	
+
 	describe('POST /todos', () => {
 		it('should create a new todo', done => {
 			var text = 'Test todo text';
@@ -35,7 +32,7 @@ describe('test server', () => {
 			request(app)
 				.post('/todos')
 				.send({text})
-				.expect(200)
+				.expect(201)
 				.expect(res => {
 					expect(res.body.text).to.be.equal(text);
 				})
