@@ -1,9 +1,10 @@
-require('./config/config')
+require('./config/config');
 
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
+const {SHA256} = require('crypto-js');
 
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
@@ -14,13 +15,15 @@ const port = process.env.PORT || 3333;
 
 app.use(bodyParser.json());
 
+// todos
+
 app.post('/todos', (req, res) => {
 	var todo = new Todo({
 		text: req.body.text,
 	});
 	todo
 		.save()
-		.then(doc => res.send(doc))
+		.then(doc => res.res(201).send(doc))
 		.catch(error => res.status(400).send(error));
 });
 
@@ -46,7 +49,7 @@ app.get('/todos/:id', (req, res) => {
 		})
 		.catch(error => {
 			console.log(JSON.stringify(error));
-			res.status(400).send()
+			res.status(400).send();
 		});
 });
 
@@ -66,7 +69,7 @@ app.delete('/todos/:id', (req, res) => {
 		})
 		.catch(error => {
 			console.log(JSON.stringify(error));
-			res.status(400).send()
+			res.status(400).send();
 		});
 });
 
@@ -85,12 +88,31 @@ app.patch('/todos/:id', (req, res) => {
 		body.completedAt = null;
 	}
 
-	Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then(todo => {
-		if (!todo) {
-			return res.status(404).send();
-		}
-		res.send({todo});
-	}).catch(e => res.status(400).send())
+	Todo.findByIdAndUpdate(id, {$set: body}, {new: true})
+		.then(todo => {
+			if (!todo) {
+				return res.status(404).send();
+			}
+			res.send({todo});
+		})
+		.catch(e => res.status(400).send());
+});
+
+// users
+
+app.post('/users', (req, res) => {
+	const body = _.pick(req.body, ['email', 'password']);
+	const user = new User(body);
+	user
+		.save()
+		.then(() => user.generateAuthToken())
+		.then(token =>
+			res
+				.header('x-auth', token)
+				.status(201)
+				.send(user)
+		)
+		.catch(error => res.status(400).send(error));
 });
 
 app.listen(port, () => {
