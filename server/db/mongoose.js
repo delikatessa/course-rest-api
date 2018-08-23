@@ -7,5 +7,3 @@ mongoose.connect(
 );
 
 module.exports = {mongoose};
-
-process.env.NODE_ENV === 'test'
