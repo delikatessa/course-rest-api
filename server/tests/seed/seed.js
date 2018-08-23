@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const {Todo} = require('../../models/todo');
 const {User} = require('../../models/user');
 
-const SECRET = 'abc123';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const user1id = new ObjectID();
 const user2id = new ObjectID();
@@ -16,7 +16,7 @@ const users = [
 		tokens: [
 			{
 				access: 'auth',
-				token: jwt.sign({_id: user1id, access: 'auth'}, SECRET).toString(),
+				token: jwt.sign({_id: user1id, access: 'auth'}, JWT_SECRET).toString(),
 			},
 		],
 	},
@@ -27,7 +27,7 @@ const users = [
 		tokens: [
 			{
 				access: 'auth',
-				token: jwt.sign({_id: user2id, access: 'auth'}, SECRET).toString(),
+				token: jwt.sign({_id: user2id, access: 'auth'}, JWT_SECRET).toString(),
 			},
 		],
 	},
