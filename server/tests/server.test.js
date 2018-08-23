@@ -252,12 +252,11 @@ describe('test server', () => {
 
 		describe('POST /users/login', () => {
 			it('should login user and return auth token', done => {
-				const user = testUsers[1];
 				request(app)
 					.post('/users/login')
 					.send({
-						email: user.email,
-						password: user.password,
+						email: testUsers[1].email,
+						password: testUsers[1].password,
 					})
 					.expect(200)
 					.expect(res => {
@@ -267,7 +266,7 @@ describe('test server', () => {
 						if (err) {
 							return done(err);
 						}
-						User.findById(user._id)
+						User.findById(testUsers[1]._id)
 							.then(user => {
 								expect(user.tokens[0]).to.include({
 									access: 'auth',
@@ -280,12 +279,11 @@ describe('test server', () => {
 			});
 
 			it('should reject invalid token', done => {
-				const user = testUsers[1];
 				request(app)
 					.post('/users/login')
 					.send({
-						email: user.email,
-						password: user.password + '1',
+						email: testUsers[1].email,
+						password: testUsers[1].password + '1',
 					})
 					.expect(400)
 					.expect(res => {
@@ -295,7 +293,27 @@ describe('test server', () => {
 						if (err) {
 							return done(err);
 						}
-						User.findById(user._id)
+						User.findById(testUsers[1]._id)
+							.then(user => {
+								expect(user.tokens).to.be.empty;
+								done();
+							})
+							.catch(err => done(err));
+					});
+			});
+		});
+
+		describe('DELETE /users/me/token', () => {
+			it('should remove auth token on logout', done => {
+				request(app)
+					.delete('/users/me/token')
+					.set('x-auth', testUsers[0].tokens[0].token)
+					.expect(200)
+					.end((err, res) => {
+						if (err) {
+							return done(err);
+						}
+						User.findById(testUsers[0]._id)
 							.then(user => {
 								expect(user.tokens).to.be.empty;
 								done();
