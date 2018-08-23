@@ -41,13 +41,13 @@ const todos = [
 ];
 
 const populateTodos = done => {
-	Todo.remove({})
+	Todo.deleteMany({})
 		.then(() => Todo.insertMany(todos))
 		.then(() => done());
 };
 
 const populateUsers = done => {
-	User.remove({})
+	User.deleteMany({})
 		.then(() => {
 			const user1 = new User(users[0]).save();
 			const user2 = new User(users[1]).save();
